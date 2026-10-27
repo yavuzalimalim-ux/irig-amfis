@@ -1,0 +1,46 @@
+iRIG AMFİ - ANDROID APK PROJESİ
+================================
+
+Gitar / saz / bas → iRig (iRig 1 ve benzeri pasif arayüzler) → telefonun 3,5 mm kulaklık girişi
+→ uygulamada amfi ve efektler → iRig'in kulaklık çıkışı.
+
+İçindekiler: 4 amfi türü (Temiz, Crunch, Lead, Fuzz), Giriş / Gain / Bas / Orta / Tiz / Ses düğmeleri,
+gürültü kapısı, kabin benzetimi, delay, reverb, hazır sesler (Temiz gitar, Blues, Rock, Metal, Solo,
+Fuzz, Saz temiz, Saz elektro, Bas gitar), kendi seslerini kaydetme, giriş/çıkış seviye ölçeri ve
+kromatik akort (Do-Re-Mi ve C-D-E adlarıyla; gitarda hangi tel olduğunu da söyler).
+Ses işleme C++ ile yazıldı ve Google'ın düşük gecikmeli ses kütüphanesi Oboe'yu kullanır.
+
+APK'yı GitHub sizin için ücretsiz derler (önceki uygulamalardaki adımların aynısı).
+
+1) https://github.com adresinde oturum açın.
+
+2) Yeni depo oluşturun:
+   Sağ üstteki "+" > "New repository" > ad: irig-amfi > "Create repository"
+
+3) Dosyaları yükleyin:
+   "uploading an existing file" bağlantısına tıklayın.
+   Bu klasörün İÇİNDEKİ her şeyi (.github klasörü dahil) sürükleyip bırakın,
+   "Commit changes" düğmesine basın.
+   .github klasörü görünmezse: "Add file" > "Create new file" > dosya adına
+   .github/workflows/build.yml yazın ve bu klasördeki aynı dosyanın içeriğini yapıştırın.
+
+4) Depoda "Actions" sekmesine girin. "APK derle" işi kendiliğinden başlar.
+   C++ kısmı da derlendiği için ilk derleme 6-10 dakika sürebilir.
+
+5) Yeşil tik çıkınca işe tıklayın; alttaki "Artifacts" bölümünden
+   "iRig-Amfi-APK" dosyasını indirin. Zip'in içinden app-debug.apk çıkar.
+   Kırmızı çarpı çıkarsa: işe tıklayıp "APK derle" adımındaki hata satırlarını kopyalayıp gönderin.
+
+6) APK'yı telefona atıp kurun. "Bilinmeyen kaynak" izni sorulursa verin;
+   Play Koruma uyarısında "Yine de yükle" deyin. Android 7.0 ve üzeri desteklenir.
+
+KULLANIM
+- Enstrüman kablosu iRig'in büyük girişine, iRig'in küçük ucu telefonun kulaklık girişine,
+  kulaklık iRig'in kendi kulaklık çıkışına.
+- Telefon sesini %30-50'den başlatın, güç düğmesine basın. İlk açılışta mikrofon izni istenir
+  (iRig telefona mikrofon gibi bağlanır).
+- Kulaklık takılı değilken uygulama ses vermez; böylece hoparlörden ötme (geri besleme) olmaz.
+  iRig çıkarılınca ses hemen kesilir. Uygulama arka plana alınınca ses durur.
+- Kulaklık girişi olmayan telefonlarda USB-C → 3,5 mm dönüştürücü MİKROFONLU (4 kutuplu) olmalıdır.
+- Bluetooth kulaklık gecikme yüzünden kullanılamaz.
+- Gecikme ekranda görünür. 20 ms altı rahat çalınır; telefona göre 10-60 ms arası değişir.

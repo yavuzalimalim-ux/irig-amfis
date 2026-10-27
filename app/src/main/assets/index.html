@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>iRig Amfi</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+:root{--bg:#070707;--panel:#141414;--panel2:#1d1d1d;--line:#2c2c2c;--ink:#f4f4f2;--muted:#a3a3a0;--red:#E3141C;--ok:#3ddc84;--warn:#ffb020;
+  --fd:"Barlow Condensed","Arial Narrow",Arial,sans-serif;--fb:"Atkinson Hyperlegible",system-ui,sans-serif}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 var(--fb);-webkit-tap-highlight-color:transparent;overscroll-behavior:none}
+body{background:radial-gradient(120% 50% at 50% -10%,#2a2a2a,transparent 60%),repeating-linear-gradient(45deg,#0c0c0c 0 6px,#090909 6px 12px)}
+button{font:inherit;color:inherit;cursor:pointer}
+.wrap{max-width:760px;margin:0 auto;padding:12px max(12px,env(safe-area-inset-left)) 40px}
+.top{display:flex;align-items:center;gap:12px;padding:8px 0 10px}
+.logo{font:800 30px/0.9 var(--fd);letter-spacing:.02em;transform:skewX(-6deg);flex:1}
+.logo small{display:block;font:700 12px/1.2 var(--fb);letter-spacing:.08em;color:var(--muted);transform:none;margin-top:4px}
+.stripes{height:8px;background:repeating-linear-gradient(90deg,#fff 0 14px,#000 14px 28px);border-radius:2px;margin-bottom:12px}
+.power{width:84px;height:84px;border-radius:50%;border:4px solid #333;background:radial-gradient(circle at 35% 30%,#3a3a3a,#111);display:grid;place-items:center;box-shadow:0 6px 18px #000a;flex:none}
+.power svg{width:38px;height:38px;stroke:#777}
+.power.on{border-color:var(--red);box-shadow:0 0 24px #e3141c88,0 6px 18px #000a}
+.power.on svg{stroke:#fff}
+.card{background:linear-gradient(#171717,#111);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}
+.card h2{margin:0 0 10px;font:800 20px/1 var(--fd);text-transform:uppercase;letter-spacing:.04em;display:flex;align-items:center;gap:8px}
+.card h2 .tag{margin-left:auto}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.muted{color:var(--muted)} .small{font-size:13px}
+.st{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.st div{background:var(--panel2);border-radius:10px;padding:8px 10px}
+.st b{display:block;font:800 18px/1.1 var(--fd)}
+.st span{font-size:12px;color:var(--muted)}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;background:#555;margin-right:6px;vertical-align:1px}
+.dot.ok{background:var(--ok)} .dot.no{background:var(--red)} .dot.w{background:var(--warn)}
+.msg{border-radius:10px;padding:10px 12px;margin-top:10px;font-size:14px;background:#2a1012;border:1px solid #5a1a1e}
+.msg.info{background:#10202a;border-color:#1e3e52}
+.meter{display:grid;grid-template-columns:54px 1fr 46px;gap:8px;align-items:center;margin:6px 0;font-size:13px}
+.bar{height:12px;border-radius:99px;background:#262626;overflow:hidden;position:relative}
+.bar i{position:absolute;inset:0 auto 0 0;width:0;background:linear-gradient(90deg,#3ddc84 0 65%,#ffb020 65% 88%,var(--red) 88%);transition:width .06s linear}
+.clip{font:800 13px var(--fd);color:#444;text-align:center;border-radius:6px;padding:1px 0;border:1px solid #333}
+.clip.hot{color:#fff;background:var(--red);border-color:var(--red)}
+.seg{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.seg button{border:2px solid #333;background:var(--panel2);border-radius:10px;padding:10px 4px;font:800 17px/1 var(--fd);text-transform:uppercase}
+.seg button.on{background:var(--red);border-color:var(--red)}
+.knobs{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:10px;margin-top:12px}
+.knob{display:flex;flex-direction:column;align-items:center;gap:4px;touch-action:none;user-select:none}
+.knob svg{width:78px;height:78px}
+.knob .l{font:800 14px/1 var(--fd);letter-spacing:.05em}
+.knob .v{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.knob:focus-visible{outline:2px solid var(--red);outline-offset:4px;border-radius:12px}
+.pedals{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.pedal{border-radius:14px;padding:12px;background:linear-gradient(#202020,#121212);border:2px solid #2e2e2e}
+.pedal.on{border-color:var(--red)}
+.pedal .ph{display:flex;align-items:center;gap:8px}
+.pedal .ph b{font:800 19px/1 var(--fd);text-transform:uppercase;flex:1}
+.led{width:12px;height:12px;border-radius:50%;background:#3a0b0d}
+.pedal.on .led{background:var(--red);box-shadow:0 0 10px var(--red)}
+.sw{border:2px solid #444;background:#0c0c0c;border-radius:999px;padding:4px 12px;font:800 13px var(--fd);text-transform:uppercase}
+.pedal .knobs{grid-template-columns:repeat(auto-fill,minmax(78px,1fr))}
+.pedal .knob svg{width:62px;height:62px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:2px solid #333;background:var(--panel2);border-radius:999px;padding:7px 13px;font:700 14px var(--fb)}
+.chip.on{border-color:#fff;background:#fff;color:#000}
+.chip.x{border-style:dashed}
+.tuner{display:grid;grid-template-columns:1fr;justify-items:center;gap:4px;padding:6px 0}
+.tuner .n{font:800 64px/1 var(--fd)}
+.tuner .n small{font-size:26px;color:var(--muted);margin-left:6px}
+.tuner .hz{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.cents{position:relative;width:100%;max-width:420px;height:34px;border-radius:8px;background:linear-gradient(90deg,#3a0b0d,#262626 40%,#173b26 48% 52%,#262626 60%,#3a0b0d)}
+.cents i{position:absolute;top:-4px;bottom:-4px;width:4px;left:50%;background:#fff;border-radius:2px;transition:left .1s}
+.cents.ok i{background:var(--ok);box-shadow:0 0 12px var(--ok)}
+.cents::after{content:"";position:absolute;left:50%;top:0;bottom:0;width:2px;background:#fff6}
+.btn{border:2px solid #444;background:var(--panel2);border-radius:10px;padding:9px 14px;font-weight:700}
+.btn.red{background:var(--red);border-color:var(--red)}
+details.help summary{cursor:pointer;font:800 18px var(--fd);text-transform:uppercase}
+details.help ol,details.help ul{padding-left:20px;margin:8px 0}
+details.help li{margin:4px 0}
+.svgd{display:block;width:100%;height:auto;margin:8px 0}
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:#fff;color:#000;padding:10px 16px;border-radius:10px;font-weight:700;z-index:9;max-width:calc(100% - 32px);text-align:center}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="logo">iRig AMFİ<small>Gitar · Saz · Bas → iRig → telefon → kulaklık</small></div>
+    <button class="power" id="power" aria-label="Amfiyi aç / kapat" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round"><path d="M12 3v8"/><path d="M6.3 6.6a8 8 0 1 0 11.4 0"/></svg></button>
+  </header>
+  <div class="stripes" aria-hidden="true"></div>
+
+  <section class="card" id="conn">
+    <h2>Bağlantı <span class="tag small muted" id="model"></span></h2>
+    <div class="st">
+      <div><span>Giriş (iRig)</span><b id="dIn"><span class="dot"></span>–</b></div>
+      <div><span>Çıkış (kulaklık)</span><b id="dOut"><span class="dot"></span>–</b></div>
+      <div><span>Gecikme</span><b id="dLat">–</b></div>
+      <div><span>Örnekleme</span><b id="dSr">–</b></div>
+    </div>
+    <div id="msg" class="msg" hidden></div>
+  </section>
+
+  <section class="card">
+    <h2>Seviye</h2>
+    <div class="meter"><span>Giriş</span><div class="bar"><i id="mIn"></i></div><span class="clip" id="cIn">CLIP</span></div>
+    <div class="meter"><span>Çıkış</span><div class="bar"><i id="mOut"></i></div><span class="clip" id="cOut">CLIP</span></div>
+    <p class="small muted" style="margin:6px 0 0">Çalarken giriş çubuğu sarıya kadar çıksın. Kırmızı “CLIP” yanıyorsa enstrümanın ses düğmesini ya da <b>Giriş</b> düğmesini kısın.</p>
+  </section>
+
+  <section class="card">
+    <h2>Hazır sesler</h2>
+    <div class="chips" id="presets"></div>
+    <div class="row" style="margin-top:10px"><button class="btn" id="saveP">Bu ayarı kaydet</button><button class="btn" id="bypass" aria-pressed="false">Efektsiz (temiz geçiş)</button></div>
+  </section>
+
+  <section class="card">
+    <h2>Amfi</h2>
+    <div class="seg" id="types" role="radiogroup" aria-label="Amfi türü"></div>
+    <div class="knobs" id="ampKnobs"></div>
+  </section>
+
+  <section class="card">
+    <h2>Pedallar</h2>
+    <div class="pedals" id="pedals"></div>
+  </section>
+
+  <section class="card">
+    <h2>Akort <span class="tag"><button class="sw" id="tunerSw" aria-pressed="false">Kapalı</button></span></h2>
+    <div id="tunerBox" hidden>
+      <div class="row" style="justify-content:center;margin-bottom:6px"><label class="small"><input type="checkbox" id="tMute"> Akort ederken sesi kıs</label></div>
+      <div class="tuner"><div class="n" id="tNote">–</div><div class="cents" id="tBar"><i id="tNeedle"></i></div><div class="hz" id="tHz">Bir teli çalın</div><div class="small muted" id="tStr"></div></div>
+    </div>
+    <p class="small muted" style="margin:6px 0 0">Kromatik akort: gitar, saz, bas ve ukulele için kullanılır. Nota hem Do-Re-Mi hem C-D-E adıyla gösterilir.</p>
+  </section>
+
+  <section class="card">
+    <details class="help" id="help"><summary>Bağlantı ve ipuçları</summary>
+      <svg class="svgd" viewBox="0 0 640 150" role="img" aria-label="Gitar iRig'e, iRig telefona, kulaklık iRig'e bağlanır">
+        <g fill="none" stroke="#fff" stroke-width="3" font-family="Arial" font-size="15" text-anchor="middle">
+          <rect x="10" y="40" width="120" height="60" rx="14"/><text x="70" y="76" fill="#fff" stroke="none">Gitar / Saz</text>
+          <path d="M130 70 H220"/><text x="175" y="60" fill="#aaa" stroke="none" font-size="12">6,3 mm jak</text>
+          <rect x="220" y="45" width="130" height="50" rx="10" stroke="#E3141C"/><text x="285" y="76" fill="#fff" stroke="none">iRig</text>
+          <path d="M350 60 H440"/><text x="395" y="50" fill="#aaa" stroke="none" font-size="12">3,5 mm uç</text>
+          <rect x="440" y="25" width="70" height="100" rx="12"/><text x="475" y="80" fill="#fff" stroke="none">Telefon</text>
+          <path d="M285 95 V130 H560"/><text x="420" y="145" fill="#aaa" stroke="none" font-size="12">kulaklık iRig'in çıkışına</text>
+          <circle cx="585" cy="118" r="22"/><text x="585" y="123" fill="#fff" stroke="none" font-size="12">🎧</text>
+        </g></svg>
+      <ol>
+        <li>Enstrüman kablosunu iRig'in büyük girişine, iRig'in küçük ucunu telefonun <b>kulaklık girişine</b> takın.</li>
+        <li>Kulaklığı <b>iRig'in kendi kulaklık çıkışına</b> takın (telefona değil).</li>
+        <li>Telefon sesini %30–50'den başlatın, ardından güç düğmesine basın. İlk açılışta mikrofon izni istenir: iRig telefona mikrofon gibi bağlanır.</li>
+        <li>Önce <b>Temiz</b> sesle deneyin, sonra hazır seslere geçin.</li>
+      </ol>
+      <ul class="small">
+        <li><b>Kulaklık girişi olmayan telefonlar:</b> USB-C → 3,5 mm dönüştürücünün <b>mikrofonlu</b> (4 kutuplu) olması gerekir. Bazı ucuz dönüştürücüler mikrofonu taşımaz.</li>
+        <li><b>Gecikme:</b> Android telefonlarda gecikme modele göre 10–60 ms arasındadır. 20 ms'nin altı rahat çalınır. Güç tasarrufu modunu kapatmak gecikmeyi düşürür.</li>
+        <li><b>Bluetooth kulaklık</b> gecikmesi çok yüksek olduğu için kullanılamaz; kablolu kulaklık kullanın.</li>
+        <li><b>Uğultu / vınlama:</b> Gürültü kapısının eşiğini yükseltin; telefonu şarjdan çıkarmak da uğultuyu azaltır.</li>
+        <li><b>Ses gelmiyorsa:</b> Bazı telefonlar iRig'i mikrofonsuz kulaklık sanar. iRig'i çıkarıp sonuna kadar yeniden takın. Gerekirse “Telefon mikrofonuyla yine de başlat” seçeneği görünür.</li>
+        <li>Uygulama, kulaklık takılı değilken sesi <b>hoparlöre vermez</b>; böylece ötme (geri besleme) olmaz.</li>
+      </ul>
+    </details>
+  </section>
+  <p class="small muted" style="text-align:center">iRig Amfi · iRig 1 ve benzeri pasif gitar arayüzleri için</p>
+</div>
+<div class="toast" id="toast" hidden></div>
+<script>
+"use strict";
+const $=s=>document.querySelector(s);
+const MOCK={start:()=>"ok",stop:()=>{},set:()=>{},pitch:()=>-1,allowNoMic:()=>{},status:()=>JSON.stringify({on:false}),devices:()=>JSON.stringify({in:false,out:false,android:false})};
+const A=window.AMP||MOCK;
+const P={ingain:0,gateOn:1,gateThr:2,type:3,drive:4,bass:5,mid:6,treble:7,cab:8,dlyOn:9,dlyMs:10,dlyFb:11,dlyMix:12,revOn:13,revSize:14,revMix:15,master:16,bypass:17,mute:18};
+const DEF={ingain:0,gateOn:1,gateThr:-62,type:1,drive:.45,bass:2,mid:0,treble:1,cab:1,dlyOn:0,dlyMs:380,dlyFb:.3,dlyMix:.25,revOn:1,revSize:.5,revMix:.18,master:-6,bypass:0,mute:0};
+const PRESETS=[
+ ["Temiz gitar",{type:0,drive:.25,bass:1,mid:0,treble:2,cab:1,gateOn:1,gateThr:-66,dlyOn:0,revOn:1,revSize:.5,revMix:.22,master:-4}],
+ ["Blues",{type:1,drive:.35,bass:2,mid:3,treble:0,cab:1,gateOn:1,gateThr:-62,dlyOn:1,dlyMs:320,dlyFb:.2,dlyMix:.15,revOn:1,revSize:.45,revMix:.18,master:-6}],
+ ["Rock",{type:1,drive:.75,bass:3,mid:1,treble:2,cab:1,gateOn:1,gateThr:-58,dlyOn:0,revOn:1,revSize:.4,revMix:.12,master:-8}],
+ ["Metal",{type:2,drive:.85,bass:4,mid:-5,treble:4,cab:1,gateOn:1,gateThr:-50,dlyOn:0,revOn:1,revSize:.3,revMix:.08,master:-10}],
+ ["Solo",{type:2,drive:.6,bass:1,mid:4,treble:2,cab:1,gateOn:1,gateThr:-56,dlyOn:1,dlyMs:420,dlyFb:.35,dlyMix:.28,revOn:1,revSize:.6,revMix:.2,master:-8}],
+ ["Fuzz",{type:3,drive:.6,bass:3,mid:0,treble:-1,cab:1,gateOn:1,gateThr:-55,dlyOn:0,revOn:1,revSize:.4,revMix:.12,master:-10}],
+ ["Saz temiz",{type:0,drive:.15,bass:-3,mid:2,treble:3,cab:0,gateOn:1,gateThr:-64,dlyOn:0,revOn:1,revSize:.55,revMix:.25,master:-6}],
+ ["Saz elektro",{type:1,drive:.35,bass:-1,mid:3,treble:2,cab:1,gateOn:1,gateThr:-60,dlyOn:1,dlyMs:280,dlyFb:.25,dlyMix:.18,revOn:1,revSize:.6,revMix:.22,master:-6}],
+ ["Bas gitar",{type:0,drive:.2,bass:5,mid:1,treble:-3,cab:1,gateOn:1,gateThr:-64,dlyOn:0,revOn:0,master:-4}]
+];
+let ST=load(), CUR=null, RUN=false;
+function load(){ try{ const o=JSON.parse(localStorage.getItem("irig-amp")||"null"); if(o&&o.v) return Object.assign({v:Object.assign({},DEF),custom:[]},o,{v:Object.assign({},DEF,o.v)}); }catch(e){} return {v:Object.assign({},DEF),custom:[]}; }
+function save(){ try{ localStorage.setItem("irig-amp",JSON.stringify(ST)); }catch(e){} }
+function send(k){ try{ A.set(P[k],+ST.v[k]); }catch(e){} }
+function sendAll(){ Object.keys(P).forEach(send); }
+function setV(k,v,noSave){ ST.v[k]=v; send(k); if(!noSave){ CUR=null; save(); markPreset(); } }
+function toast(m){ const t=$("#toast"); t.textContent=m; t.hidden=false; clearTimeout(toast.h); toast.h=setTimeout(()=>t.hidden=true,2600); }
+
+/* ---------- Düğme (knob) ---------- */
+const KN={
+ ingain:["Giriş",-12,24,v=>(v>0?"+":"")+v.toFixed(0)+" dB",1],
+ drive:["Gain",0,1,v=>Math.round(v*10*10)/10+"",.01],
+ bass:["Bas",-12,12,v=>(v>0?"+":"")+v.toFixed(0)+" dB",1],
+ mid:["Orta",-12,12,v=>(v>0?"+":"")+v.toFixed(0)+" dB",1],
+ treble:["Tiz",-12,12,v=>(v>0?"+":"")+v.toFixed(0)+" dB",1],
+ master:["Ses",-40,6,v=>(v>0?"+":"")+v.toFixed(0)+" dB",1],
+ gateThr:["Eşik",-80,-30,v=>v.toFixed(0)+" dB",1],
+ dlyMs:["Süre",40,900,v=>v.toFixed(0)+" ms",10],
+ dlyFb:["Tekrar",0,.9,v=>Math.round(v*100)+"%",.01],
+ dlyMix:["Karışım",0,1,v=>Math.round(v*100)+"%",.01],
+ revSize:["Oda",0,1,v=>Math.round(v*100)+"%",.01],
+ revMix:["Karışım",0,1,v=>Math.round(v*100)+"%",.01]
+};
+function knobSVG(f){ const a0=-135, a=a0+270*f, r=30, cx=40, cy=40; const pt=ang=>[cx+r*Math.sin(ang*Math.PI/180), cy-r*Math.cos(ang*Math.PI/180)];
+  const [x0,y0]=pt(a0),[x1,y1]=pt(a),[x2,y2]=pt(135); const large=(a-a0)>180?1:0;
+  const [px,py]=[cx+20*Math.sin(a*Math.PI/180), cy-20*Math.cos(a*Math.PI/180)];
+  return `<svg viewBox="0 0 80 80" aria-hidden="true"><path d="M${x0} ${y0} A${r} ${r} 0 1 1 ${x2} ${y2}" fill="none" stroke="#2b2b2b" stroke-width="6" stroke-linecap="round"/>${f>0.001?`<path d="M${x0} ${y0} A${r} ${r} 0 ${large} 1 ${x1} ${y1}" fill="none" stroke="#E3141C" stroke-width="6" stroke-linecap="round"/>`:""}<circle cx="40" cy="40" r="22" fill="#0e0e0e" stroke="#3a3a3a" stroke-width="2"/><circle cx="40" cy="40" r="17" fill="url(#g)"/><defs><radialGradient id="g" cx=".35" cy=".3"><stop offset="0" stop-color="#4a4a4a"/><stop offset="1" stop-color="#151515"/></radialGradient></defs><line x1="40" y1="40" x2="${px}" y2="${py}" stroke="#fff" stroke-width="3.5" stroke-linecap="round"/></svg>`; }
+function knob(k){ const [l,mn,mx,fmt]=KN[k]; const v=ST.v[k], f=(v-mn)/(mx-mn);
+  return `<div class="knob" tabindex="0" role="slider" aria-label="${l}" aria-valuemin="${mn}" aria-valuemax="${mx}" aria-valuenow="${v}" aria-valuetext="${fmt(v)}" data-k="${k}">${knobSVG(f)}<span class="l">${l==="Gain"?"GAIN":l.toLocaleUpperCase("tr")}</span><span class="v">${fmt(v)}</span></div>`; }
+function refreshKnob(el){ const k=el.dataset.k, [l,mn,mx,fmt]=KN[k], v=ST.v[k]; el.querySelector("svg").outerHTML=knobSVG((v-mn)/(mx-mn)); el.querySelector(".v").textContent=fmt(v); el.setAttribute("aria-valuenow",v); el.setAttribute("aria-valuetext",fmt(v)); }
+let drag=null;
+document.addEventListener("pointerdown",e=>{ const el=e.target.closest(".knob"); if(!el) return; e.preventDefault(); el.setPointerCapture(e.pointerId); drag={el,y:e.clientY,v0:ST.v[el.dataset.k]}; });
+document.addEventListener("pointermove",e=>{ if(!drag) return; const k=drag.el.dataset.k,[,mn,mx,,st]=KN[k]; let v=drag.v0+(drag.y-e.clientY)/160*(mx-mn); v=Math.round(Math.min(mx,Math.max(mn,v))/st)*st; if(v!==ST.v[k]){ setV(k,v); refreshKnob(drag.el); } });
+document.addEventListener("pointerup",()=>{ drag=null; });
+document.addEventListener("dblclick",e=>{ const el=e.target.closest(".knob"); if(!el) return; setV(el.dataset.k,DEF[el.dataset.k]); refreshKnob(el); });
+document.addEventListener("keydown",e=>{ const el=e.target.closest&&e.target.closest(".knob"); if(!el) return; const k=el.dataset.k,[,mn,mx,,st]=KN[k]; const d={ArrowUp:1,ArrowRight:1,ArrowDown:-1,ArrowLeft:-1}[e.key]; if(!d) return; e.preventDefault(); setV(k,Math.min(mx,Math.max(mn,+(ST.v[k]+d*st).toFixed(3)))); refreshKnob(el); });
+
+/* ---------- Bölümler ---------- */
+const TYPES=["Temiz","Crunch","Lead","Fuzz"];
+function render(){
+  $("#types").innerHTML=TYPES.map((t,i)=>`<button role="radio" aria-checked="${ST.v.type===i}" class="${ST.v.type===i?"on":""}" data-type="${i}">${t}</button>`).join("");
+  $("#ampKnobs").innerHTML=["ingain","drive","bass","mid","treble","master"].map(knob).join("");
+  const ped=(id,name,onKey,ks,note)=>`<div class="pedal ${ST.v[onKey]?"on":""}"><div class="ph"><span class="led"></span><b>${name}</b><button class="sw" data-sw="${onKey}" aria-pressed="${!!ST.v[onKey]}">${ST.v[onKey]?"Açık":"Kapalı"}</button></div>${ks.length?`<div class="knobs">${ks.map(knob).join("")}</div>`:""}${note?`<p class="small muted" style="margin:8px 0 0">${note}</p>`:""}</div>`;
+  $("#pedals").innerHTML=ped("g","Gürültü kapısı","gateOn",["gateThr"],"Çalmadığınızda uğultuyu keser.")+ped("c","Kabin","cab",[],"Hoparlör kabini sesi. Saz ve akustik için kapatın.")+ped("d","Delay","dlyOn",["dlyMs","dlyFb","dlyMix"])+ped("r","Reverb","revOn",["revSize","revMix"]);
+  $("#presets").innerHTML=PRESETS.map((p,i)=>`<button class="chip" data-pre="${i}">${p[0]}</button>`).join("")+ST.custom.map((p,i)=>`<button class="chip x" data-cus="${i}" title="Basılı tutunca silinir">${p.n}</button>`).join("");
+  $("#bypass").textContent=ST.v.bypass?"Efektler kapalı (temiz geçiş)":"Efektsiz (temiz geçiş)"; $("#bypass").classList.toggle("red",!!ST.v.bypass);
+  markPreset(); }
+function markPreset(){ document.querySelectorAll("#presets .chip").forEach(c=>c.classList.toggle("on",CUR!=null&&(c.dataset.pre===String(CUR)||(c.dataset.cus!=null&&"c"+c.dataset.cus===String(CUR))))); }
+function applyPreset(v,id){ Object.assign(ST.v,DEF,v,{bypass:0,mute:ST.v.mute,ingain:ST.v.ingain}); sendAll(); save(); CUR=id; render(); }
+document.addEventListener("click",e=>{ const b=e.target.closest("button"); if(!b) return; const d=b.dataset;
+  if(d.type!=null){ setV("type",+d.type); render(); return; }
+  if(d.sw){ setV(d.sw,ST.v[d.sw]?0:1); render(); return; }
+  if(d.pre!=null){ applyPreset(PRESETS[+d.pre][1],+d.pre); toast(PRESETS[+d.pre][0]); return; }
+  if(d.cus!=null){ const p=ST.custom[+d.cus]; applyPreset(p.v,"c"+d.cus); toast(p.n); return; }
+});
+let lp=null; document.addEventListener("pointerdown",e=>{ const b=e.target.closest("[data-cus]"); if(!b) return; lp=setTimeout(()=>{ if(confirm(`"${ST.custom[+b.dataset.cus].n}" silinsin mi?`)){ ST.custom.splice(+b.dataset.cus,1); save(); render(); } },700); });
+document.addEventListener("pointerup",()=>clearTimeout(lp));
+$("#saveP").onclick=()=>{ const n=prompt("Bu sese bir ad verin:","Benim sesim"); if(!n) return; const v=Object.assign({},ST.v); delete v.mute; delete v.bypass; ST.custom.push({n:n.slice(0,24),v}); save(); render(); toast("Kaydedildi"); };
+$("#bypass").onclick=()=>{ setV("bypass",ST.v.bypass?0:1); render(); };
+
+/* ---------- Güç, cihazlar, ölçüm ---------- */
+function devs(){ let d={}; try{ d=JSON.parse(A.devices()); }catch(e){}
+  $("#dIn").innerHTML=`<span class="dot ${d.in?"ok":"no"}"></span>${d.in?"Algılandı":"Yok"}`;
+  $("#dOut").innerHTML=`<span class="dot ${d.out?"ok":"no"}"></span>${d.out?"Algılandı":"Yok"}`;
+  $("#model").textContent=d.model||"";
+  let m="";
+  if(!d.android) m="Bu sayfa bir tarayıcıda açık. Ses işleme yalnızca Android uygulamasında çalışır; burada düğmeleri deneyebilirsiniz.";
+  else if(!d.out) m="Kulaklık çıkışı algılanmadı. iRig'i telefonun kulaklık girişine sonuna kadar takın ve kulaklığı iRig'e bağlayın.";
+  else if(!d.in) m="iRig mikrofon girişi olarak algılanmadı. iRig'i çıkarıp yeniden takın. USB-C dönüştürücü kullanıyorsanız mikrofonlu (4 kutuplu) olmalı.";
+  else if(d.bt) m="Bluetooth kulaklık bağlı görünüyor; gecikmesi çok yüksektir. Kablolu kulaklığı iRig'e takın.";
+  const box=$("#msg"); box.hidden=!m; box.className="msg"+(d.in&&d.out?" info":""); box.innerHTML=m+(d.android&&d.out&&!d.in?`<div class="row" style="margin-top:8px"><button class="btn" id="noMic">Telefon mikrofonuyla yine de başlat</button></div>`:"");
+  const nm=$("#noMic"); if(nm) nm.onclick=()=>{ try{ A.allowNoMic(true); }catch(e){} power(true); };
+  return d; }
+function power(on){ if(on){ sendAll(); const r=A.start();
+    if(r==="ok"){ RUN=true; toast("Amfi açık"); }
+    else if(r==="perm") toast("Mikrofon iznini verin: iRig telefona mikrofon olarak bağlanır.");
+    else if(r==="noout") toast("Kulaklık takılı değil. Ses hoparlöre verilmez.");
+    else if(r==="nomic") toast("iRig algılanmadı. Yeniden takın.");
+    else toast("Ses başlatılamadı. iRig'i çıkarıp takın ve tekrar deneyin.");
+  } else { A.stop(); RUN=false; }
+  $("#power").classList.toggle("on",RUN); $("#power").setAttribute("aria-pressed",RUN); devs(); }
+$("#power").onclick=()=>power(!RUN);
+window.onPerm=g=>{ if(g) power(true); else toast("Mikrofon izni olmadan iRig'den ses alınamaz."); };
+window.onDevices=()=>devs();
+window.onStopped=m=>{ RUN=false; $("#power").classList.remove("on"); toast(m); devs(); };
+window.goBack=()=>{ const h=$("#help"); if(h.open){ h.open=false; return true; } return false; };
+const pk=v=>Math.min(100,Math.max(0,(20*Math.log10(Math.max(v,1e-5))+60)/60*100));
+let hotIn=0,hotOut=0;
+setInterval(()=>{ if(!RUN) return; let s={}; try{ s=JSON.parse(A.status()); }catch(e){}
+  if(s.on===false&&RUN){ RUN=false; $("#power").classList.remove("on"); }
+  $("#mIn").style.width=pk(s.inPk||0)+"%"; $("#mOut").style.width=pk(s.outPk||0)+"%";
+  if((s.inPk||0)>=.98) hotIn=Date.now(); if((s.outPk||0)>=.94) hotOut=Date.now();
+  $("#cIn").classList.toggle("hot",Date.now()-hotIn<900); $("#cOut").classList.toggle("hot",Date.now()-hotOut<900);
+  if(s.lat){ $("#dLat").textContent=s.lat+" ms"; $("#dLat").style.color=s.lat<=20?"var(--ok)":s.lat<=40?"var(--warn)":"var(--red)"; }
+  if(s.sr) $("#dSr").textContent=(s.sr/1000).toFixed(1)+" kHz"; },80);
+
+/* ---------- Akort ---------- */
+const NT=[["Do","C"],["Do#","C#"],["Re","D"],["Re#","D#"],["Mi","E"],["Fa","F"],["Fa#","F#"],["Sol","G"],["Sol#","G#"],["La","A"],["La#","A#"],["Si","B"]];
+const GUITAR=[["6. tel Mi",82.41],["5. tel La",110],["4. tel Re",146.83],["3. tel Sol",196],["2. tel Si",246.94],["1. tel Mi",329.63]];
+let TUN=false, tuneT=null, hist=[];
+$("#tunerSw").onclick=()=>{ TUN=!TUN; $("#tunerSw").textContent=TUN?"Açık":"Kapalı"; $("#tunerSw").setAttribute("aria-pressed",TUN); $("#tunerBox").hidden=!TUN;
+  setV("mute",TUN&&$("#tMute").checked?1:0,true); clearInterval(tuneT); if(TUN) tuneT=setInterval(tune,110); if(TUN&&!RUN) toast("Akort için önce amfiyi açın."); };
+$("#tMute").onchange=()=>setV("mute",TUN&&$("#tMute").checked?1:0,true);
+function tune(){ if(!RUN) return; const f=+A.pitch(); if(!(f>20)){ return; }
+  hist.push(f); if(hist.length>5) hist.shift(); const s=hist.slice().sort((a,b)=>a-b), fm=s[Math.floor(s.length/2)];
+  const m=69+12*Math.log2(fm/440), n=Math.round(m), c=Math.round((m-n)*100), name=NT[((n%12)+12)%12], oct=Math.floor(n/12)-1;
+  $("#tNote").innerHTML=`${name[0]}<small>${name[1]}${oct}</small>`; $("#tHz").textContent=fm.toFixed(1)+" Hz · "+(c>0?"+":"")+c+" sent";
+  $("#tNeedle").style.left=(50+Math.max(-50,Math.min(50,c)))+"%"; $("#tBar").classList.toggle("ok",Math.abs(c)<=4);
+  let best=null,bd=1e9; GUITAR.forEach(g=>{ const d=Math.abs(1200*Math.log2(fm/g[1])); if(d<bd){bd=d;best=g;} });
+  $("#tStr").textContent=bd<80?`Gitar standart düzeni: ${best[0]} (${best[1]} Hz)`+(Math.abs(c)<=4?" · tamam":(c<0?" · gerdirin":" · gevşetin")):""; }
+
+render(); devs(); sendAll();
+</script>
+</body>
+</html>

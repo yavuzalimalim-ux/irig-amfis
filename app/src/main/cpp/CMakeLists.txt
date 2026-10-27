@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 3.22.1)
+project(irigamp)
+find_package(oboe REQUIRED CONFIG)
+add_library(irigamp SHARED engine.cpp)
+target_compile_options(irigamp PRIVATE -O2 -ffast-math -Wall)
+target_link_libraries(irigamp oboe::oboe log android)

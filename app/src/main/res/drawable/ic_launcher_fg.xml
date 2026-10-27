@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp" android:height="108dp" android:viewportWidth="108" android:viewportHeight="108">
+    <!-- Pena -->
+    <path android:fillColor="#FFFFFF" android:pathData="M54,30 C66,30 76,36 76,46 C76,58 62,74 54,80 C46,74 32,58 32,46 C32,36 42,30 54,30 Z" />
+    <!-- Ses dalgası -->
+    <path android:fillColor="#D7141A" android:pathData="M38,50 L44,50 L47,42 L52,60 L57,38 L61,56 L64,50 L70,50 L70,53 L66,53 L62,62 L57,46 L52,68 L47,49 L46,53 L38,53 Z" />
+</vector>
